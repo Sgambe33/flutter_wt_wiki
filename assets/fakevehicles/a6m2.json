@@ -1,0 +1,348 @@
+{
+  "identifier": "a6m2_zero_usa",
+  "country": "usa",
+  "vehicle_type": "fighter",
+  "vehicle_sub_types": [
+    "naval_aircraft"
+  ],
+  "event": null,
+  "release_date": null,
+  "version": "2.37.0.158",
+  "era": 3,
+  "arcade_br": 3.7,
+  "realistic_br": 3.7,
+  "realistic_ground_br": 3.7,
+  "simulator_br": 3.3,
+  "simulator_ground_br": 3.3,
+  "value": 0,
+  "req_exp": 18000,
+  "is_premium": true,
+  "is_pack": false,
+  "on_marketplace": false,
+  "squadron_vehicle": false,
+  "ge_cost": 1300,
+  "crew_total_count": 1,
+  "visibility": 0,
+  "hull_armor": [],
+  "turret_armor": [],
+  "mass": 2391.95,
+  "train1_cost": 10000,
+  "train2_cost": 67000,
+  "train3_cost_gold": 400,
+  "train3_cost_exp": 570000,
+  "sl_mul_arcade": 1.2,
+  "sl_mul_realistic": 4.41,
+  "sl_mul_simulator": 5.44,
+  "exp_mul": 1.36,
+  "repair_time_arcade": 3.4,
+  "repair_time_realistic": 60.41,
+  "repair_time_simulator": 10.02,
+  "repair_time_no_crew_arcade": 342.8,
+  "repair_time_no_crew_realistic": 456.82,
+  "repair_time_no_crew_simulator": 356.04,
+  "repair_cost_arcade": 965,
+  "repair_cost_realistic": 5548,
+  "repair_cost_simulator": 1721,
+  "repair_cost_per_min_arcade": 341,
+  "repair_cost_per_min_realistic": 934,
+  "repair_cost_per_min_simulator": 169,
+  "repair_cost_full_upgraded_arcade": 965,
+  "repair_cost_full_upgraded_realistic": 5548,
+  "repair_cost_full_upgraded_simulator": 1721,
+  "required_vehicle": null,
+  "engine": {
+    "horse_power_ab": 0,
+    "horse_power_rb_sb": 0,
+    "max_rpm": 0,
+    "min_rpm": 0,
+    "max_speed_ab": 0,
+    "max_reverse_speed_ab": 0,
+    "max_speed_rb_sb": 510,
+    "max_reverse_speed_rb_sb": 529
+  },
+  "modifications": [
+    {
+      "name": "new_cover",
+      "tier": 4,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "armor",
+      "icon": "modifications/armor_cover.png"
+    },
+    {
+      "name": "air_extinguisher",
+      "tier": 3,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "armor",
+      "icon": "modifications/jet_engine_extinguisher.png"
+    },
+    {
+      "name": "type99mk1_belt_pack",
+      "tier": 3,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "weapon",
+      "icon": "modifications/ammo.png"
+    },
+    {
+      "name": "type99mk1_new_gun",
+      "tier": 4,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": "type99mk1_belt_pack",
+      "mod_class": "weapon",
+      "icon": "modifications/weapon.png"
+    },
+    {
+      "name": "new_engine_injection",
+      "tier": 4,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "lth",
+      "icon": "modifications/metanol.png"
+    },
+    {
+      "name": "structure_str",
+      "tier": 2,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "armor",
+      "icon": "modifications/armor_frame.png"
+    },
+    {
+      "name": "cd_98",
+      "tier": 3,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "lth",
+      "icon": "modifications/aerodinamic_wing.png"
+    },
+    {
+      "name": "CdMin_Fuse",
+      "tier": 1,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "lth",
+      "icon": "modifications/aerodinamic_fuse.png"
+    },
+    {
+      "name": "new_compressor",
+      "tier": 2,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "lth",
+      "icon": "modifications/compressor.png"
+    },
+    {
+      "name": "type97_new_gun",
+      "tier": 2,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": "type89_belt_pack",
+      "mod_class": "weapon",
+      "icon": "modifications/weapon.png"
+    },
+    {
+      "name": "type89_belt_pack",
+      "tier": 1,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "weapon",
+      "icon": "modifications/ammo.png"
+    },
+    {
+      "name": "new_radiator",
+      "tier": 1,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "lth",
+      "icon": "modifications/radiator.png"
+    },
+    {
+      "name": "hp_105",
+      "tier": 3,
+      "repair_coeff": 0,
+      "value": 0,
+      "req_exp": 0,
+      "ge_cost": 0,
+      "required_modification": null,
+      "mod_class": "lth",
+      "icon": "modifications/new_engine.png"
+    }
+  ],
+  "ir_devices": {},
+  "thermal_devices": {},
+  "ballistic_computer": {},
+  "aerodynamics": {
+    "length": 9.05,
+    "wingspan": 11.8,
+    "wing_area": 22.438,
+    "empty_weight": 1848.5,
+    "max_takeoff_weight": 2421,
+    "max_altitude": 10300,
+    "turn_time": 17,
+    "runway_length_required": 175,
+    "max_speed_at_altitude": 4400
+  },
+  "has_customizable_weapons": false,
+  "weapons": [
+    {
+      "name": "gunType97",
+      "weapon_type": "cannon",
+      "count": 2,
+      "ammos": [
+        {
+          "name": null,
+          "type": "ap_ball",
+          "caliber": 0.0077,
+          "mass": 0.0105,
+          "speed": 730,
+          "max_distance": 2000,
+          "explosive_type": null,
+          "explosive_mass": null
+        },
+        {
+          "name": null,
+          "type": "t_ball",
+          "caliber": 0.0077,
+          "mass": 0.0104,
+          "speed": 730,
+          "max_distance": 2000,
+          "explosive_type": null,
+          "explosive_mass": null
+        },
+        {
+          "name": null,
+          "type": "he_i_ball",
+          "caliber": 0.0077,
+          "mass": 0.01049,
+          "speed": 730,
+          "max_distance": 2000,
+          "explosive_type": null,
+          "explosive_mass": null
+        },
+        {
+          "name": null,
+          "type": "i_ball",
+          "caliber": 0.0077,
+          "mass": 0.0105,
+          "speed": 720,
+          "max_distance": 2000,
+          "explosive_type": null,
+          "explosive_mass": null
+        }
+      ]
+    },
+    {
+      "name": "cannonType99",
+      "weapon_type": "cannon",
+      "count": 2,
+      "ammos": [
+        {
+          "name": null,
+          "type": "t_shell",
+          "caliber": 0.02,
+          "mass": 0.127,
+          "speed": 588,
+          "max_distance": 2000,
+          "explosive_type": null,
+          "explosive_mass": null
+        },
+        {
+          "name": null,
+          "type": "aphe",
+          "caliber": 0.02,
+          "mass": 0.131,
+          "speed": 588,
+          "max_distance": 2000,
+          "explosive_type": "pentolite",
+          "explosive_mass": 0.004
+        },
+        {
+          "name": null,
+          "type": "he_frag_i",
+          "caliber": 0.02,
+          "mass": 0.127,
+          "speed": 588,
+          "max_distance": 2000,
+          "explosive_type": "tnt",
+          "explosive_mass": 0.005
+        },
+        {
+          "name": null,
+          "type": "aphe",
+          "caliber": 0.02,
+          "mass": 0.131,
+          "speed": 588,
+          "max_distance": 2000,
+          "explosive_type": "detonite",
+          "explosive_mass": 0.004
+        },
+        {
+          "name": null,
+          "type": "he_frag_t",
+          "caliber": 0.02,
+          "mass": 0.127,
+          "speed": 588,
+          "max_distance": 2000,
+          "explosive_type": "pentolite",
+          "explosive_mass": 0.005
+        },
+        {
+          "name": null,
+          "type": "he_frag",
+          "caliber": 0.02,
+          "mass": 0.127,
+          "speed": 588,
+          "max_distance": 2000,
+          "explosive_type": "pentolite",
+          "explosive_mass": 0.0099
+        }
+      ]
+    }
+  ],
+  "presets": [],
+  "customizable_presets": [],
+  "versions": [
+    "2.37.0.158"
+  ],
+  "images": {
+    "image": "wtvehiclesapi.sgambe.serv00.net/assets/images/a6m2_zero_usa.png",
+    "techtree": "wtvehiclesapi.sgambe.serv00.net/assets/techtrees/a6m2_zero_usa.png"
+  }
+}

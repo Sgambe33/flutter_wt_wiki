@@ -1,0 +1,45 @@
+name: flutter_wt_wiki
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  cached_network_image: ^3.4.1
+  panorama_viewer: ^1.0.3
+  data_table_2: ^2.5.15
+  flutter_layout_grid: ^2.0.7
+  fl_chart: ^0.68.0
+  syncfusion_flutter_charts: ^26.2.10
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  fonts:
+    - family: CustomFont
+      fonts:
+        - asset: assets/fonts/wt_symbols.ttf
+
+  uses-material-design: true
+  assets:
+    - assets/images/country_britain_big.png
+    - assets/images/country_china_big.png
+    - assets/images/country_france_big.png
+    - assets/images/country_germany_big.png
+    - assets/images/country_israel_big.png
+    - assets/images/country_italy_kingdom_big.png
+    - assets/images/country_japan_big.png
+    - assets/images/country_sweden_big.png
+    - assets/images/country_usa_big.png
+    - assets/images/country_ussr_big.png
+    - assets/fonts/
+    - assets/fakevehicles/a6m2.json
+    - assets/modifications/
+    - assets/en.json
