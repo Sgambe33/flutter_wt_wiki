@@ -1,12 +1,9 @@
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
-
 class Constants {
   static const Map<String, String> COUNTRY_TO_FLAG_MAP = {
     'ussr': 'assets/images/country_ussr_big.png',
     'usa': 'assets/images/country_usa_big.png',
     'germany': 'assets/images/country_germany_big.png',
-    'britain': 'assets/images/country_usa_britain.png',
+    'britain': 'assets/images/country_britain_big.png',
     'japan': 'assets/images/country_japan_big.png',
     'china': 'assets/images/country_china_big.png',
     'france': 'assets/images/country_france_big.png',
@@ -27,4 +24,6 @@ class Constants {
     'sweden': 'SWE',
     'israel': 'ISR'
   };
+
+  static const Map<String, String> VEHICLE_TYPE_TO_ICON = {"light_tank": "┪", "medium_tank": "┬", "heavy_tank": "┨", "spaa": "┰", "tank_destroyer": "┴"};
 }

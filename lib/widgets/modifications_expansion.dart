@@ -123,16 +123,16 @@ class _ModificationsExpansionState extends State<ModificationsExpansion> {
                   columnGap: 10,
                   rowGap: 2,
                   children: [
-                    GridPlacement(
+                    const GridPlacement(
                         columnStart: 0,
                         columnSpan: 2,
                         rowStart: 0,
                         child: Text("Flight performance")),
-                    GridPlacement(
+                    const GridPlacement(
                         columnStart: 2,
                         rowStart: 0,
                         child: Text("Survivability")),
-                    GridPlacement(
+                    const GridPlacement(
                       columnStart: 3,
                       rowStart: 0,
                       child: Text("Weaponry",
@@ -237,17 +237,17 @@ class _ModificationsExpansionState extends State<ModificationsExpansion> {
                       columnStart: 0,
                       rowStart: 4,
                       child: InkWell(
+                        splashColor: Colors.red,
+                        enableFeedback: true,
+                        onTap: () {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(content: Text("Metanol")));
+                        },
                         child: Image.asset(
                           "assets/modifications/metanol.png",
                           height: 50,
                           width: 50,
                         ),
-                        splashColor: Colors.red,
-                        enableFeedback: true,
-                        onTap: () {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text("Metanol")));
-                        },
                       ),
                     ),
                     GridPlacement(

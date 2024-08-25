@@ -18,24 +18,29 @@ class StatsScreen extends StatefulWidget {
 
 class StatsScreenState extends State<StatsScreen> {
   late List<ChartData> data;
+  late List<dynamic> vehicleTypes;
   late TooltipBehavior _tooltip;
   String selectedValue = '═SL';
+  final PageController _pageController = PageController();
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _tooltip = TooltipBehavior(enable: true, textStyle: TextStyle(fontFamily: 'CustomFont'));
+    _tooltip = TooltipBehavior(
+        enable: true, textStyle: const TextStyle(fontFamily: 'CustomFont'));
     data = [];
     fetchData();
   }
 
   Future<void> fetchData() async {
-    final response = await http
-        .get(Uri.parse('https://wtvehiclesapi.sgambe.serv00.net/api/vehicles/stats'));
+    final response = await http.get(Uri.parse(
+        'https://wtvehiclesapi.sgambe.serv00.net/api/vehicles/stats'));
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body)['countries'];
       setState(() {
         data = jsonData.map((item) => ChartData.fromJson(item)).toList();
+        vehicleTypes = jsonData.map((item) => item['vehicle_types']).toList();
       });
     } else {
       throw Exception('Failed to load chart data');
@@ -81,39 +86,74 @@ class StatsScreenState extends State<StatsScreen> {
           ),
         ],
       ),
-      body: data.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : SfCartesianChart(
-              primaryXAxis: const CategoryAxis(),
-              primaryYAxis: NumericAxis(),
-              tooltipBehavior: _tooltip,
-              title: const ChartTitle(text: 'Economy'),
-              series: <CartesianSeries<ChartData, String>>[
-                BarSeries<ChartData, String>(
-                  dataSource: data,
-                  xValueMapper: (ChartData data, _) => data.x,
-                  yValueMapper: (ChartData data, _) {
-                    switch (selectedValue) {
-                      case '═SL':
-                        return data.SL;
-                      case '▉RP':
-                        return data.RP;
-                      case '¤GE':
-                        return data.GE;
-                      default:
-                        return 0;
-                    }
-                  },
-                  name: selectedValue,
-                  color: selectedValue == '═SL'
-                      ? Colors.grey
-                      : selectedValue == '▉RP'
-                          ? Colors.blueAccent
-                          : Colors.amber,
-                ),
-              ],
-            ),
+      body: PageView(
+        scrollDirection: Axis.horizontal,
+        controller: _pageController,
+        onPageChanged: _handlePageViewChanged,
+        physics: const BouncingScrollPhysics(),
+        children: [
+          buildEconomyChart(),
+          for (int i = 0; i < data.length; i++)
+            buildVehiclesChart(vehicleTypes[i])
+        ],
+      ),
     );
+  }
+
+  void _handlePageViewChanged(int currentPageIndex) {
+    setState(() {
+      _currentPageIndex = currentPageIndex;
+      _updateCurrentPageIndex(_currentPageIndex);
+    });
+  }
+
+  void _updateCurrentPageIndex(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  Widget buildVehiclesChart(Map<String, dynamic> vehicleTypes) {
+    return data.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : const SfCircularChart();
+  }
+
+  Widget buildEconomyChart() {
+    return data.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : SfCartesianChart(
+            primaryXAxis: const CategoryAxis(),
+            primaryYAxis: const NumericAxis(),
+            tooltipBehavior: _tooltip,
+            title: const ChartTitle(text: 'Economy'),
+            series: <CartesianSeries<ChartData, String>>[
+              BarSeries<ChartData, String>(
+                dataSource: data,
+                xValueMapper: (ChartData data, _) => data.x,
+                yValueMapper: (ChartData data, _) {
+                  switch (selectedValue) {
+                    case '═SL':
+                      return data.SL;
+                    case '▉RP':
+                      return data.RP;
+                    case '¤GE':
+                      return data.GE;
+                    default:
+                      return 0;
+                  }
+                },
+                name: selectedValue,
+                color: selectedValue == '═SL'
+                    ? Colors.grey
+                    : selectedValue == '▉RP'
+                        ? Colors.blueAccent
+                        : Colors.amber,
+              ),
+            ],
+          );
   }
 }
 
@@ -131,6 +171,22 @@ class ChartData {
       json['total_value'] ?? 0,
       json['total_req_exp'] ?? 0,
       json['total_ge_cost'] ?? 0,
+    );
+  }
+}
+
+class PieChartData {
+  PieChartData(this.x, this.y, this.color);
+
+  final String x;
+  final int y;
+  final Color color;
+
+  factory PieChartData.fromJson(Map<String, dynamic> json, String key) {
+    return PieChartData(
+      Constants.COUNTRY_TO_SHORT_MAP[json['country']] ?? 'Unknown',
+      json[key] ?? 0,
+      Colors.primaries[json.length % Colors.primaries.length],
     );
   }
 }
