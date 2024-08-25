@@ -29,16 +29,7 @@ flutter:
 
   uses-material-design: true
   assets:
-    - assets/images/country_britain_big.png
-    - assets/images/country_china_big.png
-    - assets/images/country_france_big.png
-    - assets/images/country_germany_big.png
-    - assets/images/country_israel_big.png
-    - assets/images/country_italy_kingdom_big.png
-    - assets/images/country_japan_big.png
-    - assets/images/country_sweden_big.png
-    - assets/images/country_usa_big.png
-    - assets/images/country_ussr_big.png
+    - assets/images/
     - assets/fonts/
     - assets/fakevehicles/a6m2.json
     - assets/modifications/
