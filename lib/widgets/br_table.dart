@@ -4,16 +4,29 @@ class BrTable extends StatelessWidget {
   final Map<String, dynamic> data;
   const BrTable({super.key, required this.data});
 
-  //? TODO: Remove ground BR from tanks and ships
+  String _formatBR(dynamic value) {
+    if (value is int) {
+      return "${value}.0";
+    }
+    return value.toString();
+  }
+
+  String _formatGroundBR(dynamic orginalBr, dynamic groundBr) {
+    if (orginalBr == groundBr) {
+      return _formatBR(orginalBr);
+    }
+    return "${_formatBR(orginalBr)} (${_formatBR(groundBr)}▮)";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Table(
       children: [
         _buildTableRow(["AB", "RB", "SB"], isHeader: true),
         _buildTableRow([
-          data["arcade_br"].toString(),
-          "${data["realistic_br"].toString()} (${data["realistic_ground_br"]}▮)",
-          "${data["simulator_br"].toString()} (${data["simulator_ground_br"]}▮)",
+          _formatBR(data["arcade_br"]),
+          _formatGroundBR(data["realistic_br"], data["realistic_ground_br"]),
+          _formatGroundBR(data["simulator_br"], data["simulator_ground_br"]),
         ]),
       ],
     );
