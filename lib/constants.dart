@@ -25,5 +25,18 @@ class Constants {
     'israel': 'ISR'
   };
 
+  static const Map<String, String> COUNTRY_TO_COUNTRY_NAME = {
+    'ussr': 'Russia',
+    'usa': 'United States',
+    'germany': 'Germany',
+    'britain': 'United Kingdom',
+    'japan': 'Japan',
+    'china': 'China',
+    'france': 'France',
+    'italy': 'Italy',
+    'sweden': 'Sweden',
+    'israel': 'Israel'
+  };
+
   static const Map<String, String> VEHICLE_TYPE_TO_ICON = {"light_tank": "┪", "medium_tank": "┬", "heavy_tank": "┨", "spaa": "┰", "tank_destroyer": "┴"};
 }
