@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wt_wiki/AppLocalisations.dart';
 import 'package:flutter_wt_wiki/screens/home_screen.dart';
+import 'package:flutter_wt_wiki/screens/search_page.dart';
+import 'package:flutter_wt_wiki/screens/stats_screen.dart';
+import 'package:flutter_wt_wiki/screens/vehicle_screen.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -19,9 +22,21 @@ class MainApp extends StatelessWidget {
       localizationsDelegates: const [AppLocalizationsDelegate()],
       supportedLocales: const [Locale('en')],
       initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/vehicle') {
+          final String vehicleId = settings.arguments as String;
+          return MaterialPageRoute(
+            builder: (context) {
+              return VehicleScreen(vehicleIdentifier: vehicleId);
+            },
+          );
+        }
+        return null;
+      },
       routes: {
         '/': (context) => const HomeScreen(),
-        //'/stats': (context) => StatsScreen(),
+        '/stats': (context) => StatsScreen(),
+        '/search': (context) => const SearchPage(),
       },
     );
   }
