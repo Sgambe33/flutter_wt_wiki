@@ -130,6 +130,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Home'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => Navigator.of(context).pushNamed('/search'),
+          ),
+          IconButton(
             icon: const Icon(Icons.filter_list_sharp),
             onPressed: () {
               showDialog(
