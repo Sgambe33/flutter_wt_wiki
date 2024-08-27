@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:flutter_wt_wiki/widgets/mod_icon.dart';
 
 class Modification {
   String? name;
@@ -28,7 +29,8 @@ class Modification {
 }
 
 class ModificationsExpansion extends StatefulWidget {
-  const ModificationsExpansion({super.key});
+  final Map<String, dynamic>? data;
+  const ModificationsExpansion({super.key, this.data});
 
   @override
   _ModificationsExpansionState createState() => _ModificationsExpansionState();
@@ -55,8 +57,7 @@ class _ModificationsExpansionState extends State<ModificationsExpansion> {
         tierCount[mod.tier! - 1]++;
       }
     }
-    return tierCount
-        .reduce((value, element) => value > element ? value : element);
+    return tierCount.reduce((value, element) => value > element ? value : element);
   }
 
   Map<String, List<Modification>> groupByModClass() {
@@ -65,10 +66,7 @@ class _ModificationsExpansionState extends State<ModificationsExpansion> {
       if (groupByModClass[mod.mod_class!] == null) {
         groupByModClass[mod.mod_class!] = [];
       }
-      groupByModClass[mod.mod_class!] = [
-        ...groupByModClass[mod.mod_class!]!,
-        mod
-      ];
+      groupByModClass[mod.mod_class!] = [...groupByModClass[mod.mod_class!]!, mod];
     }
     return groupByModClass;
   }
@@ -91,12 +89,10 @@ class _ModificationsExpansionState extends State<ModificationsExpansion> {
   }
 
   Future<void> loadJson() async {
-    final String response =
-        await rootBundle.loadString('assets/fakevehicles/a6m2.json');
+    final String response = await rootBundle.loadString('assets/fakevehicles/a6m2.json');
     final data = await json.decode(response);
     setState(() {
-      modifications = List<Modification>.from(
-          data['modifications'].map((x) => Modification.fromJson(x)));
+      modifications = List<Modification>.from(data['modifications'].map((x) => Modification.fromJson(x)));
       print(groupByModClassAndTier());
       print(getColumnCount());
       print(getRowCount());
@@ -117,27 +113,17 @@ class _ModificationsExpansionState extends State<ModificationsExpansion> {
             child: Row(
               children: [
                 LayoutGrid(
-                  columnSizes:
-                      List.generate(getColumnCount() + 10, (_) => auto),
+                  columnSizes: List.generate(getColumnCount() + 10, (_) => auto),
                   rowSizes: List.generate(getRowCount() + 1, (_) => auto),
                   columnGap: 10,
                   rowGap: 2,
                   children: [
-                    const GridPlacement(
-                        columnStart: 0,
-                        columnSpan: 2,
-                        rowStart: 0,
-                        child: Text("Flight performance")),
-                    const GridPlacement(
-                        columnStart: 2,
-                        rowStart: 0,
-                        child: Text("Survivability")),
+                    const GridPlacement(columnStart: 0, columnSpan: 2, rowStart: 0, child: Text("Flight performance")),
+                    const GridPlacement(columnStart: 2, rowStart: 0, child: Text("Survivability")),
                     const GridPlacement(
                       columnStart: 3,
                       rowStart: 0,
-                      child: Text("Weaponry",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.red)),
+                      child: Text("Weaponry", textAlign: TextAlign.center, style: TextStyle(color: Colors.red)),
                     ),
                     /////////////////////////////////////////
                     GridPlacement(
@@ -237,18 +223,15 @@ class _ModificationsExpansionState extends State<ModificationsExpansion> {
                       columnStart: 0,
                       rowStart: 4,
                       child: InkWell(
-                        splashColor: Colors.red,
-                        enableFeedback: true,
-                        onTap: () {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(content: Text("Metanol")));
-                        },
-                        child: Image.asset(
-                          "assets/modifications/metanol.png",
-                          height: 50,
-                          width: 50,
-                        ),
-                      ),
+                          splashColor: Colors.red,
+                          enableFeedback: true,
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Metanol")));
+                          },
+                          child: ModIcon(
+                            modificationData: widget.data!['modifications'][5],
+                            size: 50,
+                          )),
                     ),
                     GridPlacement(
                       columnStart: 2,
