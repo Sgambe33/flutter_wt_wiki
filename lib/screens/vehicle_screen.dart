@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_wt_wiki/AppLocalisations.dart';
@@ -109,9 +110,9 @@ class _VehicleScreenState extends State<VehicleScreen> {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          Text("${jsonData['vehicle_type']!} ${Constants.VEHICLE_TYPE_TO_ICON[jsonData['vehicle_type']!]}"),
-                          Image.network(
-                            jsonData['images']['image'],
+                          Text("${Constants.TYPE_TO_TYPE_NAME[jsonData['vehicle_type']] ?? ""} ${Constants.VEHICLE_TYPE_TO_ICON[jsonData['vehicle_type']!]}"),
+                          CachedNetworkImage(
+                            imageUrl: jsonData['images']['image'],
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -194,36 +195,7 @@ class _VehicleScreenState extends State<VehicleScreen> {
                     ),
                   ),
                   EconomyTable(data: jsonData),
-                  ExpansionTile(title: const Text("Crew training costs"), children: [
-                    Table(
-                      children: [
-                        TableRow(
-                          children: [
-                            const Text("Crew 1 cost"),
-                            Text("${jsonData['train1_cost']} €", textAlign: TextAlign.center),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            const Text("Crew 2 cost"),
-                            Text("${jsonData['train2_cost']} €", textAlign: TextAlign.center),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            const Text("Crew 3 cost (gold)"),
-                            Text("${jsonData['train3_cost_gold']} ¤", textAlign: TextAlign.center),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            const Text("Crew 4 cost (exp)"),
-                            Text("${jsonData['train3_cost_exp']} ▉", textAlign: TextAlign.center),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ])
+                  ModificationsExpansion(data: jsonData),
                 ],
               ),
             );
