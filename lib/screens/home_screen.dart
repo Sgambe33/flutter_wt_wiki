@@ -46,9 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   final Map<String, List<String>> _typesByCat = {
-    'Aviation': ['assault', 'attack_helicopter', 'fighter', 'bomber', 'utility_helicopter'],
-    'Ground': ['heavy_tank', 'light_tank', 'medium_tank', 'spaa', 'tank_destroyer'],
-    'Fleet': ['boat', 'destroyer', 'battleship', 'battlecruiser', 'frigate', 'heavy_cruiser', 'heavy_boat', 'light_cruiser', 'barge']
+    'Aviation': Constants.AVIATION_VEHICLE_TYPES,
+    'Ground': Constants.GROUND_VEHICLE_TYPES,
+    'Fleet': Constants.FLEET_VEHICLE_TYPES,
   };
 
   int _selectedCategory = 0;
