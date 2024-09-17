@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wt_wiki/constants.dart';
 
 class BrTable extends StatelessWidget {
   final Map<String, dynamic> data;
@@ -20,13 +21,14 @@ class BrTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isFleetType = Constants.FLEET_VEHICLE_TYPES.contains(data['vehicle_type']);
     return Table(
       children: [
-        _buildTableRow(["AB", "RB", "SB"], isHeader: true),
+        if (!isFleetType) _buildTableRow(["AB", "RB", "SB"], isHeader: true) else _buildTableRow(["AB", "RB"], isHeader: true),
         _buildTableRow([
           _formatBR(data["arcade_br"]),
           _formatGroundBR(data["realistic_br"], data["realistic_ground_br"]),
-          _formatGroundBR(data["simulator_br"], data["simulator_ground_br"]),
+          if (!isFleetType) _formatBR(data["simulator_br"]),
         ]),
       ],
     );
