@@ -2,13 +2,17 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_wt_wiki/AppLocalisations.dart';
 import 'package:flutter_wt_wiki/constants.dart';
 import 'package:flutter_wt_wiki/widgets/br_table.dart';
+import 'package:flutter_wt_wiki/widgets/combat_aid_expansion.dart';
 import 'package:flutter_wt_wiki/widgets/economy_table.dart';
-import 'package:flutter_wt_wiki/widgets/modifications_expansion.dart';
+import 'package:flutter_wt_wiki/widgets/preset_widget.dart';
+import 'package:flutter_wt_wiki/widgets/price_card.dart';
 import 'package:flutter_wt_wiki/widgets/required_tile.dart';
+import 'package:flutter_wt_wiki/widgets/simple_presets_widget.dart';
+import 'package:flutter_wt_wiki/widgets/structural_charact.dart';
+import 'package:flutter_wt_wiki/widgets/survivability_card.dart';
 import 'package:flutter_wt_wiki/widgets/vehicle_version_dialog.dart';
 
 import 'package:http/http.dart' as http;
@@ -23,11 +27,7 @@ class VehicleScreen extends StatefulWidget {
 }
 
 class _VehicleScreenState extends State<VehicleScreen> {
-  final List<bool> _isExpandedList = List.generate(6, (_) => false);
   late Map<String, dynamic> jsonData;
-  Map<String, dynamic>? EN_LOCALES;
-
-  Future<void> initConstants() async {}
 
   Future<Map<String, dynamic>> loadJson() async {
     final response = await http.get(Uri.parse('https://wtvehiclesapi.sgambe.serv00.net/api/vehicles/${widget.vehicleIdentifier}'));
@@ -41,7 +41,6 @@ class _VehicleScreenState extends State<VehicleScreen> {
   @override
   void initState() {
     super.initState();
-    initConstants();
   }
 
   String _intToRoman(int num) {
@@ -136,66 +135,17 @@ class _VehicleScreenState extends State<VehicleScreen> {
                   ),
                   if (jsonData['required_vehicle'] != null) RequiredTile(requiredVehicle: jsonData['required_vehicle']),
                   BrTable(data: jsonData),
-                  Card(
-                    child: Column(
-                      children: [
-                        if (jsonData['is_premium'] == true && jsonData['is_pack'] == true)
-                          const Text("Bundle or gift")
-                        else if (jsonData['is_premium'] == true)
-                          Table(
-                            children: [
-                              const TableRow(
-                                children: [
-                                  Text("Purchase: ", textAlign: TextAlign.center),
-                                ],
-                              ),
-                              TableRow(
-                                children: [Text("${jsonData['ge_cost']} ¤", textAlign: TextAlign.center)],
-                              ),
-                            ],
-                          )
-                        else if (jsonData['on_marketplace'] == true)
-                          const Text("Can be found on the marketplace ⋬")
-                        else if (jsonData['squadron_vehicle'] == true) ...[
-                          Table(
-                            children: [
-                              const TableRow(
-                                children: [
-                                  Text("Research: ", textAlign: TextAlign.center),
-                                  Text("Purchase: ", textAlign: TextAlign.center),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  Text("${jsonData['req_exp']}┉", textAlign: TextAlign.center),
-                                  Text("${jsonData['value']}€", textAlign: TextAlign.center),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ] else if (jsonData['is_premium'] == false && jsonData['squadron_vehicle'] == false) ...[
-                          Table(
-                            children: [
-                              const TableRow(
-                                children: [
-                                  Text("Research: ", textAlign: TextAlign.center),
-                                  Text("Purchase: ", textAlign: TextAlign.center),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  Text("${jsonData['req_exp']}▉", textAlign: TextAlign.center),
-                                  Text("${jsonData['value']}€", textAlign: TextAlign.center),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
+                  PriceCard(jsonData: jsonData),
                   EconomyTable(data: jsonData),
-                  ModificationsExpansion(data: jsonData),
+                  //ModificationsExpansion(data: jsonData), WIP
+                  SurvivabilityCard(jsonData: jsonData),
+                  StructuralCharacteristicsCard(jsonData: jsonData),
+                  CombatAidExpansion(data: jsonData),
+                  const Card(
+                    child: Column(children: [Text("Weapons")]),
+                  ),
+                  if (jsonData['has_customizable_weapons']) PresetsWidget(data: jsonData),
+                  if (!jsonData['presets'].isEmpty && !jsonData['has_customizable_weapons']) SimplePresetsWidget(presets: jsonData['presets']),
                 ],
               ),
             );

@@ -165,6 +165,7 @@ class _EconomyTableState extends State<EconomyTable> {
               ],
             ),
           ),
+          //TODO: Modularize this
           if (Constants.GROUND_VEHICLE_TYPES.contains(widget.data['vehicle_type']))
             ExpansionTile(
               title: const Text("Engine"),
@@ -203,7 +204,7 @@ class _EconomyTableState extends State<EconomyTable> {
                     ),
                     TableRow(
                       children: [
-                        const Text("Max- RPM"),
+                        const Text("Max. RPM"),
                         Text(
                           "${widget.data['engine']['max_rpm']}",
                           textAlign: TextAlign.center,
@@ -223,6 +224,7 @@ class _EconomyTableState extends State<EconomyTable> {
                 )
               ],
             ),
+            //TODO: Modularize this
           ExpansionTile(title: const Text("Crew training costs"), children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -256,12 +258,13 @@ class _EconomyTableState extends State<EconomyTable> {
               ),
             ),
           ])
+        
         ],
       ),
     );
   }
 
-  String formatDuration(double hours) {
+  String formatDuration(num hours) {
     int totalMinutes = (hours * 60).round();
     int days = totalMinutes ~/ (24 * 60);
     int hoursLeft = (totalMinutes % (24 * 60)) ~/ 60;
