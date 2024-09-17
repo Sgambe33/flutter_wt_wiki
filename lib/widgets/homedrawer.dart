@@ -52,6 +52,15 @@ class HomeDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            enabled: true,
+            leading: const Icon(Icons.map),
+            title: const Text('Game map'),
+            onTap: () {
+              // Push the map screen
+              Navigator.pushNamed(context, '/map');
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wt_wiki/AppLocalisations.dart';
 import 'package:flutter_wt_wiki/screens/home_screen.dart';
+import 'package:flutter_wt_wiki/screens/localhost_integration.dart';
 import 'package:flutter_wt_wiki/screens/search_page.dart';
 import 'package:flutter_wt_wiki/screens/stats_screen.dart';
 import 'package:flutter_wt_wiki/screens/vehicle_screen.dart';
@@ -37,6 +38,7 @@ class MainApp extends StatelessWidget {
         '/': (context) => const HomeScreen(),
         '/stats': (context) => StatsScreen(),
         '/search': (context) => const SearchPage(),
+        '/map': (context) => const LocalHostIntegration(),
       },
     );
   }
