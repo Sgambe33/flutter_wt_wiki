@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wt_wiki/AppLocalisations.dart';
 import 'package:flutter_wt_wiki/constants.dart';
@@ -10,41 +12,10 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  static const double paddingValue = 8.0;
-  static const Duration animationDuration = Duration(milliseconds: 300);
-
-  final List<Map<String, dynamic>> _filters = [
-    {
-      'name': 'Britain',
-      'selected': true,
-      'image': 'assets/images/country_britain_big.png',
-      'image_deactivated': 'assets/images/country_britain_big_locked.png'
-    },
-    {'name': 'China', 'selected': true, 'image': 'assets/images/country_china_big.png', 'image_deactivated': 'assets/images/country_china_big_locked.png'},
-    {'name': 'France', 'selected': true, 'image': 'assets/images/country_france_big.png', 'image_deactivated': 'assets/images/country_france_big_locked.png'},
-    {
-      'name': 'Germany',
-      'selected': true,
-      'image': 'assets/images/country_germany_big.png',
-      'image_deactivated': 'assets/images/country_germany_big_locked.png'
-    },
-    {'name': 'Israel', 'selected': true, 'image': 'assets/images/country_israel_big.png', 'image_deactivated': 'assets/images/country_israel_big_locked.png'},
-    {
-      'name': 'Italy',
-      'selected': true,
-      'image': 'assets/images/country_italy_kingdom_big.png',
-      'image_deactivated': 'assets/images/country_italy_kingdom_big_locked.png'
-    },
-    {'name': 'Japan', 'selected': true, 'image': 'assets/images/country_japan_big.png', 'image_deactivated': 'assets/images/country_japan_big_locked.png'},
-    {'name': 'Sweden', 'selected': true, 'image': 'assets/images/country_sweden_big.png', 'image_deactivated': 'assets/images/country_sweden_big_locked.png'},
-    {'name': 'USA', 'selected': true, 'image': 'assets/images/country_usa_big.png', 'image_deactivated': 'assets/images/country_usa_big_locked.png'},
-    {'name': 'USSR', 'selected': true, 'image': 'assets/images/country_ussr_big.png', 'image_deactivated': 'assets/images/country_ussr_big_locked.png'},
-  ];
-
+class HomeScreenState extends State<HomeScreen> {
   final Map<String, List<String>> _typesByCat = {
     'Aviation': Constants.AVIATION_VEHICLE_TYPES,
     'Ground': Constants.GROUND_VEHICLE_TYPES,
@@ -60,12 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       throw Exception('Failed to load chart data');
     }
-  }
-
-  void _toggleFilterSelection(Map<String, dynamic> filter) {
-    setState(() {
-      filter['selected'] = !filter['selected'];
-    });
   }
 
   String _intToRoman(int num) {
@@ -95,31 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Widget _buildFilterRow(List<Map<String, dynamic>> filters) {
-    return Row(
-      children: filters.map((filter) {
-        return Expanded(
-          child: GestureDetector(
-            onTap: () => _toggleFilterSelection(filter),
-            child: Container(
-              padding: const EdgeInsets.all(paddingValue),
-              child: AnimatedSwitcher(
-                duration: animationDuration,
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-                child: Image.asset(
-                  filter['selected'] ? filter['image'] : filter['image_deactivated'],
-                  key: ValueKey<bool>(filter['selected']),
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     String selectedType = _typesByCat.keys.elementAt(_selectedCategory);
@@ -133,39 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.search),
             onPressed: () => Navigator.of(context).pushNamed('/search'),
           ),
-          IconButton(
-            icon: const Icon(Icons.filter_list_sharp),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return StatefulBuilder(
-                    builder: (context, StateSetter setState) {
-                      return AlertDialog(
-                        title: const Text('Filter'),
-                        content: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              _buildFilterRow(_filters.sublist(0, 5)),
-                              _buildFilterRow(_filters.sublist(5, 10)),
-                            ],
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Close'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          ),
+          IconButton(icon: const Icon(Icons.filter_list_sharp), onPressed: () async {})
         ],
       ),
       drawer: const HomeDrawer(),
@@ -177,9 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
+              double screenWidth = MediaQuery.of(context).size.width;
+              int crossAxisCount = max((screenWidth / 200).floor(), 2);
               return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Adjust as needed
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
                   ),
                   shrinkWrap: true,
                   addAutomaticKeepAlives: true,
@@ -188,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     final item = snapshot.data![index];
                     return GestureDetector(
                       onTap: () {
-                        // Define your onTap action here
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -200,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: GridTile(
                         header: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, paddingValue, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
                           child: Text(
                             item['identifier'] != null
                                 ? AppLocalizations.of(context).stringBy('vehicles', (item['identifier'] + "_short").toLowerCase())
@@ -209,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         footer: Padding(
-                          padding: const EdgeInsets.all(paddingValue),
+                          padding: const EdgeInsets.all(8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -227,26 +136,32 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         child: Card(
-                          child: item['images']['image'] != null
-                              ? Image.network(
-                                  item['images']['image'],
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    } else {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                )
-                              : Image.asset('assets/images/uknown.png'), // Load asset image if URL is null,
-                        ),
+                            child: CachedNetworkImage(
+                                imageUrl: item['images']['image'],
+                                imageBuilder: (context, imageProvider) => Image(
+                                    image: imageProvider,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    }),
+                                errorWidget: (context, url, error) => Image.asset('assets/images/uknown.png'))),
                       ),
                     );
                   });
             }
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //Shuffle the loaded data
+          setState(() {});
+        },
+        child: const Icon(Icons.shuffle),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedCategory,
         onTap: (int index) {
