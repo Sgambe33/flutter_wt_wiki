@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wt_wiki/AppLocalisations.dart';
+import 'package:flutter_wt_wiki/app_localizations.dart';
 
 class ModIcon extends StatelessWidget {
   final Map<String, dynamic> modificationData;
@@ -19,7 +19,7 @@ class ModIcon extends StatelessWidget {
               title: Row(
                 children: [
                   Image.asset("assets/${modificationData['icon']}", width: size, height: size),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Text(AppLocalizations.of(context).stringBy('modifications', modificationData['name'])),
                 ],
               ),
@@ -62,7 +62,7 @@ class ModIcon extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Close'),
+                  child: const Text('Close'),
                 ),
               ],
             );

@@ -3,14 +3,13 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_wt_wiki/AppLocalisations.dart';
+import 'package:flutter_wt_wiki/app_localizations.dart';
 import 'package:flutter_wt_wiki/classes/synthetic_vehicle.dart';
 import 'package:flutter_wt_wiki/constants.dart';
 import 'package:flutter_wt_wiki/database_helper.dart';
 import 'package:flutter_wt_wiki/screens/vehicle_screen.dart';
 import 'package:flutter_wt_wiki/widgets/homedrawer.dart';
 
-import '../classes/vehicle.dart';
 import '../utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,12 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  final Map<String, List<String>> _typesByCat = {
-    'Aviation': Constants.aviationVehicleTypes,
-    'Ground': Constants.groundVehicleTypes,
-    'Fleet': Constants.fleetVehicleTypes,
-  };
-
+  final Map<String, List<String>> _typesByCat = {'Aviation': Constants.aviationVehicleTypes, 'Ground': Constants.groundVehicleTypes, 'Fleet': Constants.fleetVehicleTypes};
   int _selectedCategory = 0;
 
   Future<List<dynamic>> _fetchData(List<String> type) async {
@@ -60,16 +54,10 @@ class HomeScreenState extends State<HomeScreen> {
     String selectedType = _typesByCat.keys.elementAt(_selectedCategory);
     List<String>? filterTypes = _typesByCat[selectedType];
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () => Navigator.of(context).pushNamed('/search'),
-            ),
-            IconButton(icon: const Icon(Icons.filter_list_sharp), onPressed: () async {})
-          ],
-        ),
+        appBar: AppBar(title: const Text('Home'), actions: [
+          IconButton(icon: const Icon(Icons.search), onPressed: () => Navigator.of(context).pushNamed('/search')),
+          IconButton(icon: const Icon(Icons.filter_list_sharp), onPressed: () {})
+        ]),
         drawer: const HomeDrawer(),
         body: FutureBuilder<List<dynamic>>(
             future: _fetchData(filterTypes!),
@@ -85,33 +73,26 @@ class HomeScreenState extends State<HomeScreen> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: crossAxisCount),
                     shrinkWrap: true,
                     addAutomaticKeepAlives: true,
-                    itemCount: snapshot.data!.length ?? 0,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       final SyntheticVehicle dbVehicle = snapshot.data![index];
                       return GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => VehicleScreen(vehicleIdentifier: dbVehicle.identifier!)),
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => VehicleScreen(vehicleIdentifier: dbVehicle.identifier!)));
                           },
                           child: GridTile(
                               header: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                child: Text(dbVehicle.identifier != null ? AppLocalizations.of(context).stringBy('vehicles', ("${dbVehicle.identifier!}_short").toLowerCase()) : dbVehicle.identifier!,
-                                    textAlign: TextAlign.center),
-                              ),
+                                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                  child: Text(
+                                      dbVehicle.identifier != null ? AppLocalizations.of(context).stringBy('vehicles', ("${dbVehicle.identifier!}_short").toLowerCase()) : dbVehicle.identifier!,
+                                      textAlign: TextAlign.center)),
                               footer: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
+                                  padding: const EdgeInsets.all(8),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                     Image.asset(Constants.countryToFlagMap[dbVehicle.country]!, width: 40, height: 40),
                                     Text("Rank ${intToRoman(dbVehicle.era)} ${Constants.vehicleTypeToIcon[dbVehicle.vehicleType] ?? ''}",
-                                        textAlign: TextAlign.right, style: const TextStyle(fontFamily: 'CustomFont')),
-                                  ],
-                                ),
-                              ),
+                                        textAlign: TextAlign.right, style: const TextStyle(fontFamily: 'CustomFont'))
+                                  ])),
                               child: Card(
                                   child: CachedNetworkImage(
                                       imageUrl: "https://wtvehiclesapi.sgambe.serv00.net/assets/images/${dbVehicle.identifier!.toLowerCase()}.png",
@@ -130,21 +111,20 @@ class HomeScreenState extends State<HomeScreen> {
             }),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              //TODO: Implement shuffle
+              setState(() {});
             },
             child: const Icon(Icons.shuffle)),
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedCategory,
-          onTap: (int index) {
-            setState(() {
-              _selectedCategory = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.flight_takeoff), label: 'Aviation'),
-            BottomNavigationBarItem(icon: Icon(Icons.directions_car), label: 'Ground'),
-            BottomNavigationBarItem(icon: Icon(Icons.directions_ferry), label: 'Fleet')
-          ],
-        ));
+            currentIndex: _selectedCategory,
+            onTap: (int index) {
+              setState(() {
+                _selectedCategory = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.flight_takeoff), label: 'Aviation'),
+              BottomNavigationBarItem(icon: Icon(Icons.directions_car), label: 'Ground'),
+              BottomNavigationBarItem(icon: Icon(Icons.directions_ferry), label: 'Fleet')
+            ]));
   }
 }

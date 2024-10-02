@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,8 +24,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    final string =
-        await rootBundle.loadString('assets/${locale.languageCode}.json');
+    final string = await rootBundle.loadString('assets/${locale.languageCode}.json');
     language = json.decode(string);
     return SynchronousFuture<AppLocalizations>(AppLocalizations());
   }

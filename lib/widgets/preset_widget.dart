@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:flutter_wt_wiki/classes/preset.dart';
+import 'package:flutter_wt_wiki/classes/vehicle.dart';
+import 'package:flutter_wt_wiki/classes/weapon.dart';
 
 class PresetsWidget extends StatefulWidget {
-  final Map<String, dynamic> data;
+  final Vehicle dbVehicle;
 
-  const PresetsWidget({super.key, required this.data});
+  const PresetsWidget({super.key, required this.dbVehicle});
 
   @override
   _PresetsWidgetState createState() => _PresetsWidgetState();
@@ -21,24 +24,17 @@ class _PresetsWidgetState extends State<PresetsWidget> {
   }
 
   Future<void> _initializeRows() async {
-    int originalColumnCount = widget.data["customizable_presets"]["pylons"].length - 1;
+    int originalColumnCount = widget.dbVehicle.customizablePresets!.pylons.length - 1;
     int columnCount = originalColumnCount;
     if (originalColumnCount % 2 == 0) {
       columnCount += 1;
     }
 
     rows = {};
-    for (int rowIndex = 0; rowIndex < widget.data["presets"].length; rowIndex++) {
-      List<Widget> columns = List.generate(
-        columnCount,
-        (index) => Container(
-          height: 40,
-          width: 40,
-          color: Colors.grey[300],
-        ),
-      );
-      var preset = widget.data["presets"][rowIndex];
-      if (preset["weapons"].isEmpty) {
+    for (int rowIndex = 0; rowIndex < widget.dbVehicle.presets.length; rowIndex++) {
+      List<Widget> columns = List.generate(columnCount, (index) => Container(height: 40, width: 40, color: Colors.grey[300]));
+      Preset preset = widget.dbVehicle.presets[rowIndex];
+      if (preset.weapons.isEmpty) {
         rows["row_$rowIndex"] = columns;
         continue;
       }
@@ -47,26 +43,11 @@ class _PresetsWidgetState extends State<PresetsWidget> {
         if (originalColumnCount % 2 == 0 && colIndex >= originalColumnCount ~/ 2) {
           adjustedColIndex += 1;
         }
-        var pylon = widget.data["customizable_presets"]["pylons"][colIndex + 1];
-        for (var weapon in preset["weapons"]) {
-          for (var selectableWeapon in pylon["selectable_weapons"]) {
-            if (selectableWeapon["name"] == weapon["name"]) {
-              columns[adjustedColIndex] = InkWell(
-                onTap: () {
-                  print("Weapon: ${weapon["name"]}");
-                  //WEAPON POPUP WITH AMMOS
-                },
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  color: Colors.green,
-                  child: Center(
-                    child: Text(
-                      weapon["name"],
-                    ),
-                  ),
-                ),
-              );
+        var pylon = widget.dbVehicle.customizablePresets!.pylons[colIndex + 1];
+        for (Weapon weapon in preset.weapons) {
+          for (Weapon selectableWeapon in pylon.selectableWeapons) {
+            if (selectableWeapon.name == weapon.name) {
+              columns[adjustedColIndex] = InkWell(onTap: () {}, child: Container(height: 40, width: 40, color: Colors.green, child: Center(child: Text(weapon.name!))));
             }
           }
         }
@@ -77,16 +58,14 @@ class _PresetsWidgetState extends State<PresetsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    int originalColumnCount = widget.data["customizable_presets"]["pylons"].length - 1;
+    int originalColumnCount = widget.dbVehicle.customizablePresets!.pylons.length - 1;
     int columnCount = originalColumnCount;
     if (originalColumnCount % 2 == 0) {
       columnCount += 1;
     }
 
-    return ExpansionTile(
-      title: const Text('Presets'),
-      children: [
-        FutureBuilder<void>(
+    return ExpansionTile(title: const Text('Presets'), children: [
+      FutureBuilder<void>(
           future: _initializationFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -95,34 +74,20 @@ class _PresetsWidgetState extends State<PresetsWidget> {
               return const Center(child: Text('Error loading presets'));
             } else {
               return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: IntrinsicWidth(
-                  child: IntrinsicHeight(
-                    child: LayoutGrid(
-                      columnSizes: List.generate(columnCount, (index) => auto),
-                      rowSizes: List.generate(widget.data["presets"].length, (index) => auto),
-                      columnGap: 5,
-                      rowGap: 5,
-                      children: [
-                        for (int rowIndex = 0; rowIndex < widget.data["presets"].length; rowIndex++)
-                          for (int colIndex = 0; colIndex < columnCount; colIndex++)
-                            rows["row_$rowIndex"]![colIndex]?.withGridPlacement(
-                                  columnStart: colIndex,
-                                  rowStart: rowIndex,
-                                ) ??
-                                Container().withGridPlacement(
-                                  columnStart: colIndex,
-                                  rowStart: rowIndex,
-                                ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+                  scrollDirection: Axis.horizontal,
+                  child: IntrinsicWidth(
+                      child: IntrinsicHeight(
+                          child: LayoutGrid(
+                              columnSizes: List.generate(columnCount, (index) => auto),
+                              rowSizes: List.generate(widget.dbVehicle.presets.length, (index) => auto),
+                              columnGap: 5,
+                              rowGap: 5,
+                              children: [
+                        for (int rowIndex = 0; rowIndex < widget.dbVehicle.presets.length; rowIndex++)
+                          for (int colIndex = 0; colIndex < columnCount; colIndex++) rows["row_$rowIndex"]![colIndex].withGridPlacement(columnStart: colIndex, rowStart: rowIndex)
+                      ]))));
             }
-          },
-        ),
-      ],
-    );
+          })
+    ]);
   }
 }
