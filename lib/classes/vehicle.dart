@@ -133,6 +133,7 @@ class Vehicle extends SyntheticVehicle{
     return Vehicle(
       country: map['country'],
       identifier: map['identifier'],
+      vehicleType: map['vehicle_type'],
       vehicleSubTypes: map['vehicle_sub_types'] is String ? [map['vehicle_sub_types']] : List<String>.from(map['vehicle_sub_types'] ?? []),
       event: map['event'],
       releaseDate: map['release_date'],
