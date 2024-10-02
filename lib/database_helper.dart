@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'dart:io';
 
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -36,10 +37,9 @@ class DatabaseHelper {
     try {
       await Directory(dirname(dbPath)).create(recursive: true);
     } catch (e) {
-      print("Error creating directory: $e");
+      dev.log("Error creating the database directory: $e");
     }
 
-    // Copy the database from the assets
     ByteData data = await rootBundle.load('assets/vehiclesdb.sqlite3');
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes, flush: true);
@@ -47,34 +47,32 @@ class DatabaseHelper {
 
   Future<void> insert(String table, Map<String, dynamic> data) async {
     final db = await database;
-    await db.insert(
-      table,
-      data,
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await db.insert(table, data, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<SyntheticVehicle>> getSyntheticVehiclesByFilters(String table, String whereClause, List<dynamic> whereArgs) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      table,
-      where: whereClause,
-      whereArgs: whereArgs,
-    );
+    final List<Map<String, dynamic>> maps = await db.query(table, where: whereClause, whereArgs: whereArgs);
+
+    List<SyntheticVehicle> fetchedVehicles = List.generate(maps.length, (i) {
+      return SyntheticVehicle.fromMap(maps[i]);
+    });
+    fetchedVehicles.shuffle();
+    return fetchedVehicles;
+  }
+
+  Future<List<String>> searchVehiclesByQuery(String table, String query) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(table, where: 'identifier LIKE ?', whereArgs: ['%$query%'], limit: 15);
 
     return List.generate(maps.length, (i) {
-      return SyntheticVehicle.fromMap(maps[i]);
+      return maps[i]['identifier'];
     });
   }
 
   Future<Vehicle?> getVehicleById(String table, String identifier) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      table,
-      where: 'identifier = ?',
-      whereArgs: [identifier],
-      limit: 1,
-    );
+    final List<Map<String, dynamic>> maps = await db.query(table, where: 'identifier = ?', whereArgs: [identifier], limit: 1);
 
     if (maps.isNotEmpty) {
       return Vehicle.fromMap(maps.first);
@@ -85,21 +83,12 @@ class DatabaseHelper {
 
   Future<int> update(String table, Map<String, dynamic> data, String whereClause, List<dynamic> whereArgs) async {
     final db = await database;
-    return await db.update(
-      table,
-      data,
-      where: whereClause,
-      whereArgs: whereArgs,
-    );
+    return await db.update(table, data, where: whereClause, whereArgs: whereArgs);
   }
 
   Future<int> delete(String table, String whereClause, List<dynamic> whereArgs) async {
     final db = await database;
-    return await db.delete(
-      table,
-      where: whereClause,
-      whereArgs: whereArgs,
-    );
+    return await db.delete(table, where: whereClause, whereArgs: whereArgs);
   }
 
   Future<void> close() async {

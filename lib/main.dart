@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wt_wiki/AppLocalisations.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_wt_wiki/app_localizations.dart';
 import 'package:flutter_wt_wiki/screens/home_screen.dart';
 import 'package:flutter_wt_wiki/screens/localhost_integration.dart';
 import 'package:flutter_wt_wiki/screens/search_page.dart';
@@ -12,12 +13,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'CustomFont', // Set default font family
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'CustomFont'),
-      ),
+      theme: ThemeData(fontFamily: 'CustomFont'),
+      darkTheme: ThemeData.dark().copyWith(textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'CustomFont')),
       themeMode: ThemeMode.system,
       locale: const Locale('en'),
       localizationsDelegates: const [AppLocalizationsDelegate()],
@@ -26,11 +23,9 @@ class MainApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         if (settings.name == '/vehicle') {
           final String vehicleId = settings.arguments as String;
-          return MaterialPageRoute(
-            builder: (context) {
-              return VehicleScreen(vehicleIdentifier: vehicleId);
-            },
-          );
+          return MaterialPageRoute(builder: (context) {
+            return VehicleScreen(vehicleIdentifier: vehicleId);
+          });
         }
         return null;
       },
@@ -45,5 +40,6 @@ class MainApp extends StatelessWidget {
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApp());
 }
