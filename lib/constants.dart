@@ -1,5 +1,5 @@
 class Constants {
-  static const Map<String, String> COUNTRY_TO_FLAG_MAP = {
+  static const Map<String, String> countryToFlagMap = {
     'ussr': 'assets/images/country_ussr_big.png',
     'usa': 'assets/images/country_usa_big.png',
     'germany': 'assets/images/country_germany_big.png',
@@ -12,7 +12,7 @@ class Constants {
     'israel': 'assets/images/country_israel_big.png'
   };
 
-  static const Map<String, String> COUNTRY_TO_SHORT_MAP = {
+  static const Map<String, String> countryToShortMap = {
     'ussr': 'RUS',
     'usa': 'USA',
     'germany': 'GER',
@@ -25,7 +25,7 @@ class Constants {
     'israel': 'ISR'
   };
 
-  static const Map<String, String> COUNTRY_TO_COUNTRY_NAME = {
+  static const Map<String, String> countryToCountryName = {
     'ussr': 'Russia',
     'usa': 'United States',
     'germany': 'Germany',
@@ -38,7 +38,7 @@ class Constants {
     'israel': 'Israel'
   };
 
-  static const Map<String, String> TYPE_TO_TYPE_NAME = {
+  static const Map<String, String> typeToTypeName = {
     'light_tank': 'Light Tank',
     'medium_tank': 'Medium Tank',
     'heavy_tank': 'Heavy Tank',
@@ -60,7 +60,7 @@ class Constants {
     "fighter": "Fighter",
   };
 
-  static const Map<String, String> VEHICLE_TYPE_TO_ICON = {
+  static const Map<String, String> vehicleTypeToIcon = {
     //GROUND
     "light_tank": "┪",
     "medium_tank": "┬",
@@ -85,7 +85,7 @@ class Constants {
     "fighter": "┤",
   };
 
-  static const List<String> FLEET_VEHICLE_TYPES = [
+  static const List<String> fleetVehicleTypes = [
     'boat',
     'destroyer',
     'battleship',
@@ -97,7 +97,7 @@ class Constants {
     'barge'
   ];
 
-  static const List<String> GROUND_VEHICLE_TYPES = ['heavy_tank', 'light_tank', 'medium_tank', 'spaa', 'tank_destroyer'];
+  static const List<String> groundVehicleTypes = ['heavy_tank', 'light_tank', 'medium_tank', 'spaa', 'tank_destroyer'];
 
-  static const List<String> AVIATION_VEHICLE_TYPES = ['assault', 'attack_helicopter', 'fighter', 'bomber', 'utility_helicopter'];
+  static const List<String> aviationVehicleTypes = ['assault', 'attack_helicopter', 'fighter', 'bomber', 'utility_helicopter'];
 }
